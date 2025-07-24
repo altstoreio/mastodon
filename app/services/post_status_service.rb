@@ -72,6 +72,7 @@ class PostStatusService < BaseService
     @visibility   = :private if @quoted_status&.private_visibility? && %i(public unlisted).include?(@visibility&.to_sym)
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
+    @created_at = @options[:created_at]&.to_datetime
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
   end
@@ -220,6 +221,7 @@ class PostStatusService < BaseService
       application: @options[:application],
       rate_limit: @options[:with_rate_limit],
       quote_approval_policy: @options[:quote_approval_policy],
+      created_at: @created_at.presence || Time.current,
     }.compact
   end
 
