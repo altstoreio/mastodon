@@ -72,7 +72,7 @@ class PostStatusService < BaseService
     @visibility   = :unlisted if @visibility&.to_sym == :public && @account.silenced?
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
-@created_at = @options[:created_at]&.to_datetime
+    @created_at = @options[:created_at]&.to_datetime
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
   end
@@ -221,7 +221,7 @@ class PostStatusService < BaseService
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
       application: @options[:application],
       rate_limit: @options[:with_rate_limit],
-created_at: @created_at.presence || Time.current
+      created_at: @created_at.presence || Time.now.utc,
     }.compact
   end
 
