@@ -168,12 +168,7 @@ class Status < ApplicationRecord
   before_validation :set_conversation
   before_validation :set_local
 
-  before_create :set_timestamps
   around_create Mastodon::Snowflake::Callbacks
-
-  def set_timestamps
-    self.created_at ||= Time.current
-  end
 
   after_create :set_poll_id
   after_create :update_conversation
